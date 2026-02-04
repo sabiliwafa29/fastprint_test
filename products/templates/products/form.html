@@ -1,0 +1,109 @@
+{% extends 'products/base.html' %}
+
+{% block title %}{{ title }} - Fastprint Test{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-edit"></i> {{ title }}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="produkForm" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.nama_produk.id_for_label }}" class="form-label">
+                            {{ form.nama_produk.label }} <span class="text-danger">*</span>
+                        </label>
+                        {{ form.nama_produk }}
+                        {% if form.nama_produk.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.nama_produk.errors.0 }}
+                        </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Nama produk wajib diisi</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.harga.id_for_label }}" class="form-label">
+                            {{ form.harga.label }} <span class="text-danger">*</span>
+                        </label>
+                        {{ form.harga }}
+                        {% if form.harga.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.harga.errors.0 }}
+                        </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Harga harus berupa angka</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.kategori.id_for_label }}" class="form-label">
+                            {{ form.kategori.label }} <span class="text-danger">*</span>
+                        </label>
+                        {{ form.kategori }}
+                        {% if form.kategori.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.kategori.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.status.id_for_label }}" class="form-label">
+                            {{ form.status.label }} <span class="text-danger">*</span>
+                        </label>
+                        {{ form.status }}
+                        {% if form.status.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.status.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'index' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Batal
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> {{ action }} Produk
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('produkForm').addEventListener('submit', function(e) {
+    let isValid = true;
+    
+    // Validasi nama produk
+    const namaProduk = document.getElementById('{{ form.nama_produk.id_for_label }}');
+    if (!namaProduk.value.trim()) {
+        alert('Nama produk harus diisi!');
+        namaProduk.focus();
+        e.preventDefault();
+        return false;
+    }
+    
+    // Validasi harga
+    const harga = document.getElementById('{{ form.harga.id_for_label }}');
+    if (!harga.value || isNaN(harga.value) || parseFloat(harga.value) < 0) {
+        alert('Harga harus berupa angka yang valid!');
+        harga.focus();
+        e.preventDefault();
+        return false;
+    }
+    
+    return true;
+});
+</script>
+{% endblock %}

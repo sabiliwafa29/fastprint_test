@@ -1,0 +1,6 @@
+Django==4.2.7
+djangorestframework==3.14.0
+psycopg[binary]==3.2.13
+pymysql==1.1.0
+requests==2.31.0
+python-dotenv==1.0.0

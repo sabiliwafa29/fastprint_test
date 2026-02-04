@@ -1,0 +1,121 @@
+{% extends 'products/base.html' %}
+
+{% block title %}{{ title }} - Fastprint Test{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2>
+            <i class="fas fa-box"></i> {{ title }}
+        </h2>
+        <hr>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title mb-0">
+                            Total Produk: <span class="badge bg-primary">{{ products|length }}</span>
+                        </h5>
+                    </div>
+                    <div>
+                        {% if show_all %}
+                        <a href="{% url 'produk_bisa_dijual' %}" class="btn btn-success">
+                            <i class="fas fa-filter"></i> Lihat Produk Bisa Dijual
+                        </a>
+                        {% else %}
+                        <a href="{% url 'index' %}" class="btn btn-secondary">
+                            <i class="fas fa-list"></i> Lihat Semua Produk
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'tambah_produk' %}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Tambah Produk
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if products %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th width="5%">ID</th>
+                        <th width="35%">Nama Produk</th>
+                        <th width="15%">Harga</th>
+                        <th width="20%">Kategori</th>
+                        <th width="10%">Status</th>
+                        <th width="15%" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.id_produk }}</td>
+                        <td>{{ product.nama_produk }}</td>
+                        <td>Rp {{ product.harga|floatformat:0 }}</td>
+                        <td>{{ product.kategori.nama_kategori }}</td>
+                        <td>
+                            {% if product.status.nama_status == 'bisa dijual' %}
+                            <span class="badge bg-success">{{ product.status.nama_status }}</span>
+                            {% else %}
+                            <span class="badge bg-danger">{{ product.status.nama_status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'edit_produk' product.id_produk %}" 
+                               class="btn btn-sm btn-warning" 
+                               title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button type="button" 
+                                    class="btn btn-sm btn-danger" 
+                                    onclick="confirmDelete({{ product.id_produk }}, '{{ product.nama_produk }}')"
+                                    title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> 
+            Tidak ada data produk.
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Hidden form untuk delete -->
+<form id="deleteForm" method="POST" style="display: none;">
+    {% csrf_token %}
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function confirmDelete(id, nama) {
+    if (confirm('Apakah Anda yakin ingin menghapus produk "' + nama + '"?')) {
+        const form = document.getElementById('deleteForm');
+        form.action = '/hapus/' + id + '/';
+        form.submit();
+    }
+}
+</script>
+{% endblock %}
