@@ -12,7 +12,7 @@ Aplikasi CRUD manajemen produk dengan integrasi API Fastprint.
 
 ### 1. Clone Repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/sabiliwafa29/fastprint_test.git
 cd fastprint_test
 ```
 
@@ -33,18 +33,6 @@ pip install -r requirements.txt
 ```
 
 ### 4. Setup Database
-
-#### PostgreSQL:
-```bash
-# Login ke PostgreSQL
-psql -U postgres
-
-# Buat database
-CREATE DATABASE fastprint_db;
-CREATE USER fastprint_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE fastprint_db TO fastprint_user;
-\q
-```
 
 #### MySQL:
 ```bash
@@ -117,16 +105,6 @@ Aplikasi akan berjalan di `http://127.0.0.1:8000/`
 - ✅ Edit produk dengan validasi form
 - ✅ Hapus produk dengan konfirmasi alert
 - ✅ Serializer untuk validasi data
-
-## 🔗 URL Endpoints
-
-| URL | Description |
-|-----|-------------|
-| `/` | Halaman utama (list produk) |
-| `/bisa-dijual/` | List produk yang bisa dijual |
-| `/tambah/` | Form tambah produk |
-| `/edit/<id>/` | Form edit produk |
-| `/hapus/<id>/` | Hapus produk |
 
 ## 👨‍💻 Author
 
